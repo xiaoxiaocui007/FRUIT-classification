@@ -11,9 +11,6 @@ import time
 from torch.utils.data import Dataset
 import numpy as np
 
-
-# 3，6，9是b类
-
 class CustomDataset(Dataset):
     def __init__(self, file_dir):
         data_list = []
@@ -43,32 +40,18 @@ class CustomDataset(Dataset):
 
 
 batch_size = 2
-
-# 创建数据集
 dataset = CustomDataset("./data")
-
-# 指定数据集的总大小
 total_size = len(dataset)
+train_size = int(0.8 * total_size) 
+val_size = total_size - train_size  
 
-# 计算训练集和验证集的大小
-train_size = int(0.8 * total_size)  # 80% 用于训练
-val_size = total_size - train_size  # 20% 用于验证
-
-# 将数据集划分为训练集和验证集
 train_dataset, val_dataset = random_split(dataset, [train_size, val_size], generator=torch.Generator().manual_seed(42))
-
-# 创建训练集和验证集的DataLoader实例
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-
 model_name = "MyModel"
-model = MyModel(num_class=len(os.listdir("./data")))  # MyModel  MyModel_2 MyModel_3
-
-# 定义损失函数和优化器
+model = MyModel(num_class=len(os.listdir("./data"))) 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-
-# 训练模型
 num_epochs = 100
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
@@ -79,10 +62,9 @@ val_loss_history = []
 val_acc_history = []
 start_time = time.time()
 
-# 最高acc
 epoch_acc_best = 0
 for epoch in range(num_epochs):
-    # 训练
+
     model.train()
     running_loss = 0.0
     correct_predictions = 0
@@ -140,25 +122,3 @@ print(f"训练时间：{time.time() - start_time}")
 # 保存模型
 torch.save(model_state_dict_best, f'./weights/{model_name}.pth')
 
-# 绘制acc和loss曲线
-plt.figure(figsize=(10, 5))
-
-plt.subplot(1, 2, 1)
-plt.plot(range(1, num_epochs + 1), train_loss_history, label='Training Loss')
-plt.plot(range(1, num_epochs + 1), val_loss_history, label='Validation Loss')
-plt.title('Training Loss over Epochs')
-plt.xlabel('Epochs')
-plt.ylabel('Loss')
-plt.legend()
-
-plt.subplot(1, 2, 2)
-plt.plot(range(1, num_epochs + 1), train_acc_history, label='Training Accuracy')
-plt.plot(range(1, num_epochs + 1), val_acc_history, label='Validation Accuracy')
-plt.title('Training Accuracy over Epochs')
-plt.xlabel('Epochs')
-plt.ylabel('Accuracy')
-plt.legend()
-
-plt.tight_layout()
-plt.savefig(f"./images/Loss_{model_name}.png", dpi=300)
-plt.show()
