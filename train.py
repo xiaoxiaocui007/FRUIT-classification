@@ -21,8 +21,8 @@ class CustomDataset(Dataset):
             file_path = os.path.join(file_dir, file)
             data = pd.read_csv(file_path)
             for j in range(len(data)):
-                labels_list.append(i)  # 添加标签
-                row_data = data.iloc[j].astype(np.float32)  # 预处理
+                labels_list.append(i) 
+                row_data = data.iloc[j].astype(np.float32) 
                 data_list.append(row_data / 1000)
 
         self.data_numpy = np.array(data_list)
@@ -117,7 +117,5 @@ for epoch in range(num_epochs):
             print(f"更新了模型，{epoch_acc_best:.4f}")
 
 print(f"训练时间：{time.time() - start_time}")
-
-# 保存模型
 torch.save(model_state_dict_best, f'./weights/{model_name}.pth')
 
