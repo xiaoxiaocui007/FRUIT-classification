@@ -33,12 +33,12 @@ bash
 python train.py
 ### 运行测试脚本：
 bash
-python test.py
+python valid.py
 ### 模型训练
 训练脚本train.py将加载数据集，构建WDCNN模型，并在训练集上进行训练。
 
 ### 模型评估
-测试脚本test.py将加载训练好的模型，并在测试集上评估模型性能。
+测试脚本valid.py将加载训练好的模型，并在测试集上评估模型性能。
 
 # 贡献
 欢迎对本项目做出贡献。如果您有任何建议或发现问题，请提交Pull Request或创建Issue。
