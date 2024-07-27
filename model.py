@@ -4,7 +4,7 @@ class MyModel(nn.Module):
     def __init__(self, num_class=10):
         super(MyModel, self).__init__()
 
-        self.conv1 = nn.Conv1d(1, 16, kernel_size=4, stride=1, padding=1)  # 修改参数
+        self.conv1 = nn.Conv1d(1, 16, kernel_size=4, stride=1, padding=1) 
         self.bn1 = nn.BatchNorm1d(16)
         self.relu1 = nn.ReLU()
         self.max_pool1 = nn.MaxPool1d(kernel_size=2, stride=2)
@@ -47,10 +47,7 @@ class MyModel(nn.Module):
         return x
 
 if __name__ == "__main__":
-    # 创建模型实例
     model = MyModel(num_class=4)
-
-    # 测试模型
     input_tensor = torch.randn((4, 1500))  
     output_tensor = model(input_tensor)
     print("Output shape:", output_tensor.shape)
